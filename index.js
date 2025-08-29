@@ -1,23 +1,16 @@
-const express = require('express')
-const app = express()
-const port = process.env.PORT || 3000;
+app.post('/bfhl', (req, res) => {
+    try {
+        const { data } = req.body;
 
-
-app.use(express.json());
-
-app.post('/bfhl',(req,res)=>{
-    try{
-        const {data} = req.body;
-        
         const fullName = "Astitva Singh";
-        const dob = "DDMMYYYY";
-        const email = "astitva.singh2022@vitstudent.ac.in";
-        const rollNumber="22BCE3624";
-
-        const userId = `${fullName.toLowerCase()}_${dob}`;
-
+        const dob = "10032004"; // <-- TODO: REPLACE THIS WITH YOUR DOB
+        const email = "astitva.singh2022b@vitstudent.ac.in";
+        const rollNumber = "22BCE3624";
         
- let oddNumbers = [];
+        // FIX 1: Changed comma to underscore
+        const userId = `${fullName.toLowerCase().replace(" ", "_")}_${dob}`;
+
+        let oddNumbers = [];
         let evenNumbers = [];
         let alphabets = [];
         let specialCharacters = [];
@@ -26,9 +19,10 @@ app.post('/bfhl',(req,res)=>{
 
         data.forEach(item => {
             if (isNaN(item)) {
-                if (item.length === 1 && /[a-zA-Z]/.test(item)) {
-                     alphabets.push(item.toUpperCase());
-                     alphaString += item;
+                // FIX 2: Corrected the check for alphabets
+                if (/^[a-zA-Z]+$/.test(item)) {
+                    alphabets.push(item.toUpperCase());
+                    alphaString += item;
                 } else {
                     specialCharacters.push(item);
                 }
@@ -42,7 +36,7 @@ app.post('/bfhl',(req,res)=>{
                 }
             }
         });
-
+        
         const reversedAlpha = alphaString.split('').reverse().join('');
         let concatString = "";
         for (let i = 0; i < reversedAlpha.length; i++) {
@@ -52,7 +46,7 @@ app.post('/bfhl',(req,res)=>{
                 concatString += reversedAlpha[i].toLowerCase();
             }
         }
-        
+
         const response = {
             is_success: true,
             user_id: userId,
@@ -72,8 +66,4 @@ app.post('/bfhl',(req,res)=>{
         console.error(error);
         return res.status(500).json({ is_success: false, error: error.message });
     }
-});
-
-app.listen(port, () => {
-    console.log(`Server is running on port ${port}`);
 });
