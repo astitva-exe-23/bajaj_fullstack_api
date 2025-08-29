@@ -72,3 +72,7 @@ app.post('/bfhl', (req, res) => {
         return res.status(500).json({ is_success: false, error: error.message });
     }
 });
+
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
+});
