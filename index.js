@@ -1,3 +1,8 @@
+const express = require('express')
+const app = express()
+const port = process.env.PORT || 3000;
+
+
 app.post('/bfhl', (req, res) => {
     try {
         const { data } = req.body;
